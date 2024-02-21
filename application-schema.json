@@ -1,0 +1,171 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["name","version","icon","entry"],
+    "title": "应用基准配置",
+    "description": "描述应用的元信息，等价于Windows属性",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "description": "应用真实名称，只会显示在详细信息中，但是强烈建议填写",
+            "title": "Application Name",
+            "default": "test-app"
+        },
+        "version":{
+            "type": "number",
+            "minimum": 0.1,
+            "default": 0.1,
+            "title": "Application Version",
+            "description": "版本号，无符号浮点数。建议定义"
+        },
+        "icon":{
+            "type": "string",
+            "pattern": "^\/",
+            "minLength": 1,
+            "default": "icon.webp",
+            "title": "Application Default Icon",
+            "description": "图标存储位置，相对于WinB包\n注意必须以'/'开头，建议使用JPG / PNG / WEBP图片"
+        },
+        "entry":{
+            "type": "string",
+            "pattern": "^\/(.+)\\.(js|html)$",
+            "title": "Application Entry",
+            "description": "入口位置。支持JS作为入口\n想要HTML作为入口的则需要定义window作为窗口配置\n参考：[详细信息](\"https://winb.imzlh.top/docs/#/app/config.json\")",
+            "default": "index.js"
+        },
+        "includes":{
+            "type": "array",
+            "description": "打包时需要包含在包中的文件",
+            "title": "Included Files",
+            "items": {
+                "type": "string"
+            }
+        },
+        "window":{
+            "type": "object",
+            "required": ["x","y","width","height","display","name"],
+            "description": "创建的窗口初始化配置",
+            "title": "Window PreConfig",
+            "$comment": "eval:/(.+)\\.html/i.test(this.entry)",
+            "properties": {
+                "x": {
+                    "type": "number",
+                    "default": 100,
+                    "title": "Window position X",
+                    "description": "定义窗口默认x轴位置"
+                },
+                "y": {
+                    "type": "number",
+                    "default": 100,
+                    "title": "Window position Y",
+                    "description": "定义窗口默认x轴位置"
+                },
+                "width": {
+                    "type": "number",
+                    "default": 100,
+                    "title": "Window DefaultWidth",
+                    "description": "定义窗口默认长度"
+                },
+                "height": {
+                    "type": "number",
+                    "default": 100,
+                    "title": "Window DefaultHeight",
+                    "description": "定义窗口默认宽度"
+                },
+                "display": {
+                    "type": "string",
+                    "enum": ["normal", "max", "hidden"],
+                    "title": "Window default display state",
+                    "description": "定义显示的大小",
+                    "default": "normal"
+                },
+                "head": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Display header?",
+                    "description": "定义是否显示默认头"
+                },
+                "action":{
+                    "type": "array",
+                    "title": "Window Action Buttons",
+                    "default": ["min","resize","close"],
+                    "items": {
+                        "type": "string",
+                        "enum": ["min","resize","close"]
+                    },
+                    "description": "默认启动时窗口行为，如最小化打开"
+                },
+                "title": {
+                    "type": "string",
+                    "default": "无标题",
+                    "title": "Window Title",
+                    "description": "窗口的标题"
+                },
+                "name": {
+                    "type": "string",
+                    "default": "test",
+                    "title": "WindowDOM ClassName",
+                    "description": "你的窗口名称，建议使用英文字符。\n定义后可以使用ClassName '.app-{名称}' 获取窗口实例"
+                },
+                "icon": {
+                    "type": "string",
+                    "default": "icpn.webp",
+                    "title": "Window Icon",
+                    "description": "你的窗口图标，显示在任务栏和应用顶部"
+                },
+                "btns": {
+                    "type": "object",
+                    "properties": {
+                        "icon": {
+                            "type": "string",
+                            "description": "用于显示到按钮的图片，如data:..."
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "显示到按钮的文本"
+                        },
+                        "desc":{
+                            "type": "string",
+                            "description": "描述文本，长时间停留会显示"
+                        },
+                        "handle": {
+                            "type": "string",
+                            "enum": ["min","resize","close"],
+                            "description": "按钮的作用类型"
+                        }
+                    }
+                }
+            }
+        },
+        "author":{
+            "type":"string",
+            "title": "Application Author",
+            "description": "应用作者"
+        },
+        "email":{
+            "type":"string",
+            "format": "email",
+            "title": "Author e-mail",
+            "description": "作者邮箱，可选，用于Bug反馈"
+        },
+        "link":{
+            "type":"string",
+            "format": "uri",
+            "title": "Application HomePage URL",
+            "description": "相关网页，如开发者个人主页"
+        },
+        "language":{
+            "type": "string",
+            "default": "zh-CN",
+            "title": "Language Opinion",
+            "description": "应用主要语言类型"
+        },
+        "copyright":{
+            "type": "string",
+            "title": "Application Copyright",
+            "description": "应用版权"
+        }
+    }
+}
